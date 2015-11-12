@@ -161,8 +161,8 @@ public class LrcView extends View {
     /**
      * 解析一行
      *
-     * @param line [00:00.00]南山南
-     * @return {0, 南山南}
+     * @param line [00:10.61]走过了人来人往
+     * @return {10610, 走过了人来人往}
      */
     private String[] parseLine(String line) {
         Matcher matcher = Pattern.compile("\\[(\\d)+:(\\d)+(\\.)(\\d+)\\].+").matcher(line);
@@ -179,7 +179,7 @@ public class LrcView extends View {
     /**
      * 解析时间
      *
-     * @param time 00:08.31
+     * @param time 00:10.61
      * @return long
      */
     private String parseTime(String time) {
