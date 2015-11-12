@@ -33,6 +33,7 @@ public class LrcView extends View {
     private Paint mCurrentPaint;
     private float mTextSize;
     private float mDividerHeight;
+    private long mAnimationDuration;
     private long mNextTime = 0l;
     private int mCurrentLine = 0;
     private float mAnimOffset;
@@ -55,7 +56,9 @@ public class LrcView extends View {
     private void init(AttributeSet attrs) {
         TypedArray ta = getContext().obtainStyledAttributes(attrs, R.styleable.LrcView);
         mTextSize = ta.getDimension(R.styleable.LrcView_textSize, 48.0f);
-        mDividerHeight = ta.getDimension(R.styleable.LrcView_dividerHeight, 48.0f);
+        mDividerHeight = ta.getDimension(R.styleable.LrcView_dividerHeight, 72.0f);
+        mAnimationDuration = ta.getInt(R.styleable.LrcView_animationDuration, 1000);
+        mAnimationDuration = mAnimationDuration < 0 ? 1000 : mAnimationDuration;
         int normalColor = ta.getColor(R.styleable.LrcView_normalTextColor, 0xffffffff);
         int currentColor = ta.getColor(R.styleable.LrcView_currentTextColor, 0xffff4081);
         ta.recycle();
@@ -136,18 +139,18 @@ public class LrcView extends View {
             return;
         }
         for (int i = 0; i < mLrcTimes.size(); i++) {
-            //最后一行
-            if (i == mLrcTimes.size() - 1 && time >= mLrcTimes.get(i)) {
-                Log.i(TAG, "end ...");
-                mCurrentLine = mLrcTimes.size() - 1;
-                mIsEnd = true;
-                //属性动画只能在主线程使用，因此用Handler转发操作
-                mHandler.sendEmptyMessage(MSG_NEW_LINE);
-                break;
-            } else if (mLrcTimes.get(i) > time) {
+            if (mLrcTimes.get(i) > time) {
                 Log.i(TAG, "newline ...");
                 mNextTime = mLrcTimes.get(i);
                 mCurrentLine = i < 1 ? 0 : i - 1;
+                //属性动画只能在主线程使用，因此用Handler转发操作
+                mHandler.sendEmptyMessage(MSG_NEW_LINE);
+                break;
+            } else if (i == mLrcTimes.size() - 1) {
+                //最后一行
+                Log.i(TAG, "end ...");
+                mCurrentLine = mLrcTimes.size() - 1;
+                mIsEnd = true;
                 //属性动画只能在主线程使用，因此用Handler转发操作
                 mHandler.sendEmptyMessage(MSG_NEW_LINE);
                 break;
@@ -200,7 +203,7 @@ public class LrcView extends View {
      */
     private void newLineAnim() {
         ValueAnimator animator = ValueAnimator.ofFloat(mTextSize + mDividerHeight, 0.0f);
-        animator.setDuration(600);
+        animator.setDuration(mAnimationDuration);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {

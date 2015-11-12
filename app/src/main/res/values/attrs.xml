@@ -5,5 +5,6 @@
         <attr name="dividerHeight" format="dimension" />
         <attr name="normalTextColor" format="reference|color" />
         <attr name="currentTextColor" format="reference|color" />
+        <attr name="animationDuration" format="integer" />
     </declare-styleable>
 </resources>

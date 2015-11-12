@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:lrc="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,8 +10,9 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:background="@android:color/black"
-        app:currentTextColor="?attr/colorAccent"
-        app:dividerHeight="16dp"
-        app:normalTextColor="@android:color/white"
-        app:textSize="16sp" />
+        lrc:animationDuration="1000"
+        lrc:currentTextColor="?attr/colorAccent"
+        lrc:dividerHeight="24dp"
+        lrc:normalTextColor="@android:color/white"
+        lrc:textSize="16sp" />
 </FrameLayout>
